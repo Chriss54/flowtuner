@@ -1,0 +1,166 @@
+{
+    "Header": {
+        "services": "Leistungen",
+        "process": "Prozess",
+        "faq": "FAQ",
+        "blog": "Blog",
+        "cta": "Erstberatung buchen →",
+        "menuOpen": "Menü öffnen",
+        "menuClose": "Menü schließen"
+    },
+    "Hero": {
+        "badge": "KI-Automatisierung für den Mittelstand",
+        "title": "Ihr Unternehmenswissen – ",
+        "titleHighlight": "sofort verfügbar.",
+        "titleSuffix": "Für jeden Mitarbeiter.",
+        "subtitle": "Wir bauen Ihnen ein Company Brain: Ein KI-System, das Ihr gesamtes Unternehmenswissen durchsuchbar, nutzbar und intelligent macht – in Wochen, nicht Monaten.",
+        "ctaPrimary": "Kostenlose Erstberatung buchen →",
+        "ctaSecondary": "So funktioniert's ↓"
+    },
+    "Problem": {
+        "label": "Das Problem",
+        "title": "Kommt Ihnen das bekannt vor?",
+        "cards": {
+            "search": {
+                "title": "Stundenlange Informationssuche",
+                "text": "Ihr Team verbringt jeden Tag Zeit damit, Informationen zu suchen, die irgendwo in E-Mails, Dokumenten oder den Köpfen einzelner Mitarbeiter existieren."
+            },
+            "knowledge": {
+                "title": "Wissen geht mit Mitarbeitern",
+                "text": "Wenn erfahrene Mitarbeiter das Unternehmen verlassen, nehmen sie jahrelang aufgebautes Wissen mit – unwiederbringlich."
+            },
+            "silos": {
+                "title": "Abteilungssilos überall",
+                "text": "Jede Abteilung hat ihre eigenen Systeme und Dokumente. Keiner sieht das Gesamtbild. Doppelarbeit ist Alltag."
+            },
+            "ai": {
+                "title": "KI-Potenzial bleibt ungenutzt",
+                "text": "Sie wissen, dass KI helfen könnte – aber der Markt ist unübersichtlich, und ein Fehlstart kostet Zeit und Vertrauen."
+            }
+        }
+    },
+    "Solution": {
+        "label": "Die Lösung",
+        "title": "Stellen Sie sich vor, jeder Mitarbeiter hätte einen ",
+        "titleHighlight": "persönlichen Experten",
+        "description": "Das ist [PRODUKTNAME]. Wir verwandeln Ihr Unternehmenswissen in eine intelligente, durchsuchbare KI – maßgeschneidert für Ihr Team.",
+        "features": {
+            "speed": {
+                "title": "Antworten in Sekunden statt Stunden",
+                "text": "Ihr Team stellt eine Frage – Ihr Company Brain liefert die Antwort. Aus Ihren Dokumenten, Ihren Prozessen, Ihrem Wissen."
+            },
+            "documents": {
+                "title": "Funktioniert mit Ihren bestehenden Dokumenten",
+                "text": "PDFs, Word, Confluence, SharePoint, E-Mails – wir integrieren, was Sie bereits haben. Keine Migration nötig."
+            },
+            "learning": {
+                "title": "Lernt mit – wird jeden Tag besser",
+                "text": "Je mehr Ihr Team das System nutzt, desto präziser werden die Antworten. Kontinuierliche Optimierung, automatisch."
+            },
+            "security": {
+                "title": "DSGVO-konform, auf deutschen Servern",
+                "text": "Ihre Daten bleiben in Deutschland. Volle Compliance, keine Kompromisse. Enterprise-Sicherheit von Tag eins."
+            }
+        }
+    },
+    "HowItWorks": {
+        "label": "Der Prozess",
+        "title": "So funktioniert's – in 3 Schritten",
+        "description": "Von der ersten Idee bis zum laufenden System. Klar, planbar, ohne Risiko.",
+        "steps": {
+            "consultation": {
+                "title": "Erstgespräch",
+                "text": "In 15 Minuten verstehen wir Ihre Situation und Ziele. Kostenlos, unverbindlich.",
+                "time": "15 Min"
+            },
+            "build": {
+                "title": "Aufbau",
+                "text": "Wir bauen Ihr maßgeschneidertes System in wenigen Wochen – nicht Monaten.",
+                "time": "2-4 Wochen"
+            },
+            "result": {
+                "title": "Ergebnis",
+                "text": "Ihr Team arbeitet schneller, klüger, besser. Wissen ist sofort verfügbar.",
+                "time": "Sofort nutzbar"
+            }
+        }
+    },
+    "SocialProof": {
+        "quote": "Die Zukunft gehört Unternehmen, die ihr Wissen nicht nur speichern, sondern intelligent nutzbar machen. KI ist dabei kein Selbstzweck – sie ist das Werkzeug, das menschliche Expertise skalierbar macht.",
+        "author": "KI-Experte",
+        "authorSuffix": " – Aus unseren Blog-Interviews"
+    },
+    "FAQ": {
+        "label": "FAQ",
+        "title": "Häufig gestellte Fragen",
+        "description": "Haben Sie weitere Fragen? Kontaktieren Sie uns gerne.",
+        "bookNow": "Jetzt Termin buchen →",
+        "items": {
+            "what": {
+                "question": "Was genau ist ein Company Brain?",
+                "answer": "Ein Company Brain ist eine maßgeschneiderte KI-Lösung, die Ihr gesamtes Unternehmenswissen – aus Dokumenten, E-Mails, Wikis und anderen Quellen – in einem intelligenten, durchsuchbaren System zusammenführt. Mitarbeiter können natürlichsprachliche Fragen stellen und erhalten sofort präzise Antworten."
+            },
+            "duration": {
+                "question": "Wie lange dauert die Implementierung?",
+                "answer": "Je nach Komplexität und Umfang Ihrer Wissensquellen dauert die Implementierung typischerweise zwei bis vier Wochen. Ein erstes funktionierendes System haben Sie oft schon nach 1-2 Wochen – wir arbeiten iterativ und liefern schnell Mehrwert."
+            },
+            "gdpr": {
+                "question": "Ist das DSGVO-konform?",
+                "answer": "Ja, absolut. Ihre Daten werden ausschließlich auf deutschen Servern verarbeitet und gespeichert. Wir arbeiten mit DSGVO-konformen Cloud-Anbietern und implementieren alle erforderlichen technischen und organisatorischen Maßnahmen zum Datenschutz."
+            },
+            "cost": {
+                "question": "Was kostet das?",
+                "answer": "Jedes Projekt ist individuell, abhängig von Umfang, Komplexität und Anzahl der Nutzer. In einem kostenlosen 15-Minuten-Erstgespräch können wir Ihre Situation verstehen und Ihnen eine erste Einschätzung geben."
+            },
+            "technical": {
+                "question": "Muss mein Team technisch versiert sein?",
+                "answer": "Nein. Das Company Brain ist so konzipiert, dass jeder Mitarbeiter es nutzen kann – ohne technische Vorkenntnisse. Die Bedienung ist so einfach wie eine Google-Suche: Frage stellen, Antwort erhalten."
+            },
+            "sources": {
+                "question": "Welche Dokumente und Datenquellen können eingebunden werden?",
+                "answer": "Praktisch alle: PDFs, Word-Dokumente, Excel-Dateien, E-Mails, Confluence, SharePoint, Google Drive, Notion, interne Wikis, Datenbanken und viele mehr. Wir passen die Integration an Ihre bestehende Infrastruktur an."
+            },
+            "difference": {
+                "question": "Was unterscheidet Sie von ChatGPT Enterprise oder Microsoft Copilot?",
+                "answer": "Diese Tools sind generisch und kennen Ihr Unternehmen nicht. Unser Company Brain wird speziell auf Ihre Dokumente, Prozesse und Fachsprache trainiert. Es liefert präzise, quellenbasierte Antworten aus Ihrem eigenen Wissen – nicht aus dem Internet."
+            },
+            "security": {
+                "question": "Wie sicher sind unsere Daten?",
+                "answer": "Maximale Sicherheit: Ende-zu-Ende-Verschlüsselung, deutsche Serverstandorte, regelmäßige Sicherheitsaudits, Zugriffskontrollen und auf Wunsch On-Premise-Deployment. Ihre Daten gehören Ihnen und werden niemals für das Training externer Modelle verwendet."
+            }
+        }
+    },
+    "CTA": {
+        "label": "Jetzt starten",
+        "title": "Bereit für Ihr Company Brain?",
+        "subtitle": "Lassen Sie uns in 15 Minuten herausfinden, was Automatisierung für Ihr Unternehmen tun kann. Kostenlos. Unverbindlich. Kein Verkaufsdruck.",
+        "noJsMessage": "JavaScript ist deaktiviert.",
+        "noJsLink": "Klicken Sie hier, um direkt bei Calendly zu buchen.",
+        "trustGdpr": "🔒 DSGVO-konform",
+        "trustGerman": "🇩🇪 Deutsche Server",
+        "trustFree": "✓ Kostenlos & unverbindlich"
+    },
+    "Blog": {
+        "label": "Insights",
+        "title": "Aus unserem Blog",
+        "allPosts": "Alle Beiträge →",
+        "noPostsYet": "Bald erscheinen hier unsere ersten Artikel."
+    },
+    "Footer": {
+        "description": "Wir automatisieren, was Ihre besten Leute von ihrer besten Arbeit abhält. KI-Lösungen für den deutschen Mittelstand.",
+        "navigation": "Navigation",
+        "services": "Leistungen",
+        "process": "Prozess",
+        "faq": "FAQ",
+        "blog": "Blog",
+        "legal": "Rechtliches",
+        "imprint": "Impressum",
+        "privacy": "Datenschutz",
+        "copyright": "© {year} FLOWTUNER. Alle Rechte vorbehalten.",
+        "madeIn": "DSGVO-konform | Made in Germany"
+    },
+    "Metadata": {
+        "title": "FLOWTUNER – KI-Automatisierung für Unternehmen",
+        "description": "Wir automatisieren, was Ihre besten Leute von ihrer besten Arbeit abhält. Ihr Unternehmenswissen – sofort verfügbar für jeden Mitarbeiter."
+    }
+}

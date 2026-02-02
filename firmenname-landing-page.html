@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[FIRMENNAME] – Ihr Unternehmenswissen, intelligent verfügbar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   CSS CUSTOM PROPERTIES
+   ═══════════════════════════════════════════ */
+:root {
+  --bg-primary: #09090b;
+  --bg-secondary: #0f0f13;
+  --bg-card: #16161d;
+  --bg-card-hover: #1c1c26;
+  --bg-elevated: #1e1e28;
+  
+  --text-primary: #f0f0f3;
+  --text-secondary: #9395a5;
+  --text-muted: #5d5f72;
+  
+  --accent: #6ee7b7;
+  --accent-dim: #34d399;
+  --accent-glow: rgba(110, 231, 183, 0.15);
+  --accent-glow-strong: rgba(110, 231, 183, 0.3);
+  
+  --warm: #fbbf24;
+  --warm-dim: rgba(251, 191, 36, 0.1);
+  
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --max-w: 1140px;
+  --space-section: clamp(80px, 10vw, 140px);
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { 
+  scroll-behavior: smooth; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; }
+
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ═══════════════════════════════════════════
+   NOISE TEXTURE OVERLAY
+   ═══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL ANIMATIONS
+   ═══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ═══════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════ */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  transition: all 0.3s ease;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 9, 11, 0.8);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  position: relative;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--accent-glow-strong);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.nav { display: flex; align-items: center; gap: 36px; }
+
+.nav a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+
+.nav a:hover { color: var(--text-primary); }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: var(--accent);
+  color: var(--bg-primary);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px var(--accent-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 40px var(--accent-glow-strong), 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.hamburger { display: none; background: none; padding: 8px; }
+.hamburger span { display: block; width: 20px; height: 1.5px; background: var(--text-primary); margin: 5px 0; transition: 0.3s; }
+
+/* ═══════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 72px;
+  overflow: hidden;
+}
+
+/* Gradient orbs */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(110, 231, 183, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -15%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 15s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+/* Grid pattern background */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 70%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  line-height: 1.08;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--accent) 0%, #a5f3fc 50%, var(--accent) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 6s linear infinite;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.25s;
+}
+
+.btn-secondary:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background: var(--bg-card);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION DEFAULTS
+   ═══════════════════════════════════════════ */
+section {
+  padding: var(--space-section) 0;
+  position: relative;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent-dim);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.12;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.75;
+}
+
+/* ═══════════════════════════════════════════
+   PAIN SECTION
+   ═══════════════════════════════════════════ */
+.pain-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 56px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.pain-card {
+  background: var(--bg-primary);
+  padding: 40px 36px;
+  transition: background 0.3s;
+}
+
+.pain-card:hover {
+  background: var(--bg-card);
+}
+
+.pain-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.pain-card h3 {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.pain-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   SOLUTION SECTION
+   ═══════════════════════════════════════════ */
+.solution-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 64px;
+}
+
+.solution-header .section-label { justify-content: center; }
+.solution-header .section-title { margin-bottom: 16px; }
+.solution-header .section-desc { margin: 0 auto; }
+
+.solution-title-accent {
+  color: var(--accent);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 32px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow-strong), transparent);
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.feature-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.feature-card:hover::before { opacity: 1; }
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-glow);
+  border: 1px solid rgba(110, 231, 183, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  font-size: 20px;
+}
+
+.feature-card h3 {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.feature-card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   HOW IT WORKS
+   ═══════════════════════════════════════════ */
+.steps-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 56px;
+  position: relative;
+}
+
+/* Connecting line */
+.steps-container::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: calc(16.67% + 16px);
+  right: calc(16.67% + 16px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent), var(--accent-dim));
+  opacity: 0.3;
+}
+
+.step {
+  text-align: center;
+  padding: 0 28px;
+  position: relative;
+}
+
+.step-number {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1px solid var(--accent-dim);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--accent);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.step h3 {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.step p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+.step-time {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-dim);
+  padding: 4px 10px;
+  background: var(--accent-glow);
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+}
+
+/* ═══════════════════════════════════════════
+   SOCIAL PROOF
+   ═══════════════════════════════════════════ */
+.proof-section {
+  position: relative;
+}
+
+.proof-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  padding: 40px 0;
+  margin-bottom: 56px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg-card);
+}
+
+.proof-logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  opacity: 0.5;
+  letter-spacing: 0.02em;
+  transition: opacity 0.3s;
+}
+
+.proof-logo:hover { opacity: 1; }
+
+.quote-block {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.quote-mark {
+  font-family: var(--font-display);
+  font-size: 80px;
+  color: var(--accent);
+  opacity: 0.2;
+  line-height: 1;
+  margin-bottom: -20px;
+}
+
+.quote-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+
+.quote-author {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.quote-author strong {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════
+   FAQ SECTION
+   ═══════════════════════════════════════════ */
+.faq-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 0;
+}
+
+.faq-left { position: sticky; top: 120px; }
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 0;
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+  letter-spacing: -0.01em;
+}
+
+.faq-question:hover { color: var(--accent); }
+
+.faq-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.faq-item.active .faq-icon {
+  background: var(--accent-glow);
+  border-color: var(--accent-dim);
+  color: var(--accent);
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s;
+  padding: 0 0;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 300px;
+  padding: 0 0 22px 0;
+}
+
+.faq-answer p {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+.faq-answer a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ═══════════════════════════════════════════
+   CTA SECTION
+   ═══════════════════════════════════════════ */
+.cta-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-content .section-label { justify-content: center; }
+
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--text-primary);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+
+.cta-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 48px;
+}
+
+.cta-embed {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+}
+
+.cta-embed-placeholder {
+  text-align: center;
+  padding: 48px 24px;
+  border: 1px dashed var(--border-hover);
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.cta-embed-placeholder a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cta-trust {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 32px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.cta-trust span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ═══════════════════════════════════════════
+   BLOG TEASER
+   ═══════════════════════════════════════════ */
+.blog-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+}
+
+.blog-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 48px;
+}
+
+.blog-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s;
+}
+
+.blog-link:hover { gap: 10px; }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.blog-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.blog-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+
+.blog-card-img {
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-card-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(110, 231, 183, 0.05), rgba(99, 102, 241, 0.05));
+}
+
+.blog-card-body {
+  padding: 24px;
+}
+
+.blog-card-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  margin-bottom: 10px;
+}
+
+.blog-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.blog-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.blog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+.footer {
+  padding: 64px 0 32px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 64px;
+  margin-bottom: 56px;
+}
+
+.footer-brand p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-top: 16px;
+  max-width: 320px;
+}
+
+.footer-col h4 {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--text-primary); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   STICKY MOBILE CTA
+   ═══════════════════════════════════════════ */
+.mobile-cta {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: rgba(9, 9, 11, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  z-index: 999;
+}
+
+.mobile-cta .btn-primary {
+  width: 100%;
+  justify-content: center;
+  padding: 14px;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .pain-grid { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .steps-container { grid-template-columns: 1fr; gap: 40px; }
+  .steps-container::before { display: none; }
+  .faq-layout { grid-template-columns: 1fr; gap: 40px; }
+  .faq-left { position: static; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; gap: 40px; }
+  .proof-logos { flex-wrap: wrap; gap: 24px; padding: 28px; }
+  .blog-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+
+@media (max-width: 640px) {
+  .nav { display: none; }
+  .hamburger { display: block; }
+  .hero h1 { font-size: 2.4rem; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions .btn-primary, .hero-actions .btn-secondary { justify-content: center; }
+  .mobile-cta { display: block; }
+  .cta-embed { padding: 24px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <span class="logo-dot"></span>
+      [FIRMENNAME]
+    </a>
+    <nav class="nav">
+      <a href="#solution">Leistungen</a>
+      <a href="#how-it-works">Prozess</a>
+      <a href="#faq">FAQ</a>
+      <a href="/blog">Blog</a>
+      <a href="#cta" class="btn-primary">Erstberatung buchen →</a>
+    </nav>
+    <button class="hamburger" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        KI-Automatisierung für den Mittelstand
+      </div>
+      <h1>Ihr Unternehmenswissen&nbsp;– <em>sofort verfügbar.</em><br>Für jeden Mitarbeiter.</h1>
+      <p class="hero-sub">Wir bauen Ihnen ein Company Brain: Ein KI-System, das Ihr gesamtes Unternehmenswissen durchsuchbar, nutzbar und intelligent macht – in Wochen, nicht Monaten.</p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary">Kostenlose Erstberatung buchen →</a>
+        <a href="#how-it-works" class="btn-secondary">So funktioniert's ↓</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PAIN ═══════════════════════ -->
+<section class="pain-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Das Problem</span>
+      <h2 class="section-title">Kommt Ihnen das bekannt vor?</h2>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card reveal reveal-delay-1">
+        <div class="pain-icon">🔍</div>
+        <h3>Stundenlange Informationssuche</h3>
+        <p>Ihr Team verbringt jeden Tag Zeit damit, Informationen zu suchen, die irgendwo in E-Mails, Dokumenten oder den Köpfen einzelner Mitarbeiter existieren.</p>
+      </div>
+      <div class="pain-card reveal reveal-delay-2">
+        <div class="pain-icon">🚪</div>
+        <h3>Wissen geht mit Mitarbeitern</h3>
+        <p>Wenn erfahrene Mitarbeiter das Unternehmen verlassen, nehmen sie jahrelang aufgebautes Wissen mit – unwiederbringlich.</p>
+      </div>
+      <div class="pain-card reveal reveal-delay-3">
+        <div class="pain-icon">🏚️</div>
+        <h3>Abteilungssilos überall</h3>
+        <p>Jede Abteilung hat ihre eigenen Systeme und Dokumente. Keiner sieht das Gesamtbild. Doppelarbeit ist Alltag.</p>
+      </div>
+      <div class="pain-card reveal reveal-delay-4">
+        <div class="pain-icon">🤷</div>
+        <h3>KI-Potenzial bleibt ungenutzt</h3>
+        <p>Sie wissen, dass KI helfen könnte – aber der Markt ist unübersichtlich, und ein Fehlstart kostet Zeit und Vertrauen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SOLUTION ═══════════════════════ -->
+<section id="solution">
+  <div class="container">
+    <div class="solution-header reveal">
+      <span class="section-label">Die Lösung</span>
+      <h2 class="section-title">Stellen Sie sich vor, jeder Mitarbeiter hätte einen <span class="solution-title-accent">persönlichen Experten</span></h2>
+      <p class="section-desc">Das ist [PRODUKTNAME]. Wir verwandeln Ihr Unternehmenswissen in eine intelligente, durchsuchbare KI – maßgeschneidert für Ihr Team.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">⚡</div>
+        <h3>Antworten in Sekunden statt Stunden</h3>
+        <p>Ihr Team stellt eine Frage – Ihr Company Brain liefert die Antwort. Aus Ihren Dokumenten, Ihren Prozessen, Ihrem Wissen.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">📄</div>
+        <h3>Funktioniert mit Ihren bestehenden Dokumenten</h3>
+        <p>PDFs, Word, Confluence, SharePoint, E-Mails – wir integrieren, was Sie bereits haben. Keine Migration nötig.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">📈</div>
+        <h3>Lernt mit – wird jeden Tag besser</h3>
+        <p>Je mehr Ihr Team das System nutzt, desto präziser werden die Antworten. Kontinuierliche Optimierung, automatisch.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon">🛡️</div>
+        <h3>DSGVO-konform, auf deutschen Servern</h3>
+        <p>Ihre Daten bleiben in Deutschland. Volle Compliance, keine Kompromisse. Enterprise-Sicherheit von Tag eins.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ HOW IT WORKS ═══════════════════════ -->
+<section class="steps-section" id="how-it-works">
+  <div class="container">
+    <div class="solution-header reveal">
+      <span class="section-label">Der Prozess</span>
+      <h2 class="section-title">So funktioniert's – in 3 Schritten</h2>
+      <p class="section-desc">Von der ersten Idee bis zum laufenden System. Klar, planbar, ohne Risiko.</p>
+    </div>
+    <div class="steps-container">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-number">1</div>
+        <h3>Erstgespräch</h3>
+        <p>In 15 Minuten verstehen wir Ihre Situation, Ihre Ziele und wo das größte Potenzial liegt.</p>
+        <span class="step-time">15 Min · Kostenlos</span>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-number">2</div>
+        <h3>Aufbau</h3>
+        <p>Wir bauen Ihr maßgeschneidertes Company Brain – integriert in Ihre bestehende Infrastruktur.</p>
+        <span class="step-time">2–6 Wochen</span>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-number">3</div>
+        <h3>Ergebnis</h3>
+        <p>Ihr Team arbeitet schneller, trifft bessere Entscheidungen und verliert kein Wissen mehr.</p>
+        <span class="step-time">Ab Tag 1</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SOCIAL PROOF ═══════════════════════ -->
+<section class="proof-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Vertrauen</span>
+      <h2 class="section-title">Gebaut mit bewährter Technologie</h2>
+    </div>
+    <div class="proof-logos reveal reveal-delay-1">
+      <span class="proof-logo">OpenAI</span>
+      <span class="proof-logo">LangChain</span>
+      <span class="proof-logo">Pinecone</span>
+      <span class="proof-logo">Azure</span>
+      <span class="proof-logo">Anthropic</span>
+    </div>
+    <div class="quote-block reveal reveal-delay-2">
+      <div class="quote-mark">"</div>
+      <p class="quote-text">Die Zukunft gehört Unternehmen, die ihr Wissen nicht nur speichern, sondern intelligent verfügbar machen. KI ist dabei kein Selbstzweck – sie ist das Werkzeug, das menschliche Expertise skalierbar macht.</p>
+      <div class="quote-author">
+        <strong>[Interviewpartner Name]</strong> · KI-Experte, aus dem [FIRMENNAME]-Blog
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FAQ ═══════════════════════ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-left reveal">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Häufig gestellte Fragen</h2>
+        <p class="section-desc" style="margin-top: 12px;">Sie haben noch Fragen? Wir haben Antworten. Und wenn nicht – <a href="#cta" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px;">sprechen wir darüber</a>.</p>
+      </div>
+      <div class="faq-list reveal reveal-delay-1">
+        <div class="faq-item">
+          <button class="faq-question">
+            Was genau ist ein Company Brain?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Ein Company Brain ist eine maßgeschneiderte KI-Lösung, die Ihr gesamtes Unternehmenswissen – aus Dokumenten, E-Mails, Datenbanken und mehr – durchsuchbar und intelligent nutzbar macht. Stellen Sie sich einen Experten vor, der alles weiß, was Ihr Unternehmen je produziert hat.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Wie lange dauert die Implementierung?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Je nach Umfang und Datenquellen zwischen 2 und 6 Wochen. Erste Ergebnisse sehen Sie oft schon nach wenigen Tagen. Wir arbeiten agil und in enger Abstimmung mit Ihrem Team.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Ist das DSGVO-konform?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Ja, zu 100%. Alle Daten bleiben auf deutschen bzw. europäischen Servern. Wir arbeiten ausschließlich mit DSGVO-konformen Anbietern und können auf Wunsch auch komplett On-Premise deployen.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Was kostet das?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Jedes Projekt ist individuell. In einem <a href="#cta">kostenlosen 15-Minuten-Erstgespräch</a> können wir Ihren Bedarf einschätzen und eine erste Orientierung geben – ganz unverbindlich.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Muss mein Team technisch versiert sein?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Nein. Die Oberfläche ist so einfach wie eine Suchmaschine. Wenn Ihr Team googeln kann, kann es auch Ihr Company Brain nutzen. Wir übernehmen Schulung und Onboarding.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Welche Datenquellen können eingebunden werden?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Praktisch alle: PDFs, Word-Dokumente, Confluence, SharePoint, Notion, E-Mails, Datenbanken, CRM-Systeme und mehr. Wir passen die Anbindung an Ihre bestehende Infrastruktur an.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Was unterscheidet Sie von ChatGPT Enterprise oder Copilot?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>ChatGPT und Copilot sind Generalisten. Wir bauen Spezialisten – trainiert auf Ihr Wissen, integriert in Ihre Systeme, optimiert für Ihre Prozesse. Der Unterschied: Präzision statt Allgemeinwissen.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            Wie sicher sind unsere Daten?
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Maximale Sicherheit: Verschlüsselung in Transit und at Rest, Zugriffskontrollen, regelmäßige Audits. Auf Wunsch komplett in Ihrer eigenen Infrastruktur. Ihre Daten werden niemals für das Training externer Modelle verwendet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ CTA ═══════════════════════ -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-content reveal">
+      <span class="section-label">Nächster Schritt</span>
+      <h2 class="cta-title">Lassen Sie uns in 15 Minuten herausfinden, was Automatisierung für Ihr Unternehmen tun kann.</h2>
+      <p class="cta-subtitle">Kostenlos. Unverbindlich. Kein Verkaufsdruck.</p>
+      <div class="cta-embed">
+        <div class="cta-embed-placeholder">
+          <!-- Calendly Inline Widget: Ersetze den Platzhalter -->
+          <p style="font-size:40px;margin-bottom:16px;">📅</p>
+          <p>Calendly-Widget wird hier eingebettet</p>
+          <p style="margin-top:8px;">Oder direkt buchen: <a href="[CALENDLY-URL]">[CALENDLY-URL]</a></p>
+        </div>
+      </div>
+      <div class="cta-trust">
+        <span>✓ Kostenlos</span>
+        <span>✓ 15 Minuten</span>
+        <span>✓ Unverbindlich</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ BLOG TEASER ═══════════════════════ -->
+<section class="blog-section">
+  <div class="container">
+    <div class="blog-header reveal">
+      <div>
+        <span class="section-label">Blog</span>
+        <h2 class="section-title">Aus unserem Blog</h2>
+      </div>
+      <a href="/blog" class="blog-link">Alle Beiträge ansehen →</a>
+    </div>
+    <div class="blog-grid">
+      <a href="/blog/company-brain-erklaert" class="blog-card reveal reveal-delay-1">
+        <div class="blog-card-img"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-tag">Technologie</div>
+          <h3>Was ist ein Company Brain – und warum braucht Ihr Unternehmen eines?</h3>
+          <p>Eine verständliche Einführung in RAG-Systeme und warum sie die Art verändern, wie Unternehmen auf Wissen zugreifen.</p>
+          <div class="blog-card-meta">
+            <span>8 Min Lesezeit</span>
+            <span>·</span>
+            <span>Jan 2026</span>
+          </div>
+        </div>
+      </a>
+      <a href="/blog/ki-interview-series-01" class="blog-card reveal reveal-delay-2">
+        <div class="blog-card-img"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-tag">Interview</div>
+          <h3>„KI ist kein Ersatz für Menschen – sondern ein Multiplikator"</h3>
+          <p>Im Gespräch mit KI-Entwicklern über die Zukunft der Automatisierung und was Unternehmen heute tun sollten.</p>
+          <div class="blog-card-meta">
+            <span>12 Min Lesezeit</span>
+            <span>·</span>
+            <span>Dez 2025</span>
+          </div>
+        </div>
+      </a>
+      <a href="/blog/automatisierung-mittelstand" class="blog-card reveal reveal-delay-3">
+        <div class="blog-card-img"></div>
+        <div class="blog-card-body">
+          <div class="blog-card-tag">Strategie</div>
+          <h3>5 Automatisierungen, die jeder Mittelständler morgen starten kann</h3>
+          <p>Konkrete, umsetzbare Beispiele für Automatisierung, die keinen Data Scientist erfordern.</p>
+          <div class="blog-card-meta">
+            <span>6 Min Lesezeit</span>
+            <span>·</span>
+            <span>Nov 2025</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-dot"></span>
+          [FIRMENNAME]
+        </div>
+        <p>Wir bauen intelligente KI-Systeme, die Ihr Unternehmenswissen nutzbar machen. Maßgeschneidert, sicher, DSGVO-konform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="#solution">Leistungen</a>
+        <a href="#how-it-works">Prozess</a>
+        <a href="#faq">FAQ</a>
+        <a href="/blog">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Rechtliches</h4>
+        <a href="/impressum">Impressum</a>
+        <a href="/datenschutz">Datenschutz</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 [FIRMENNAME]. Alle Rechte vorbehalten.</span>
+      <span>Gebaut mit Präzision in Deutschland.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════ MOBILE CTA ═══════════════════════ -->
+<div class="mobile-cta">
+  <a href="#cta" class="btn-primary">Kostenlose Erstberatung buchen →</a>
+</div>
+
+<!-- ═══════════════════════ MINIMAL JS ═══════════════════════ -->
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const wasActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+    if (!wasActive) item.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

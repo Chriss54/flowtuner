@@ -1,0 +1,166 @@
+{
+    "Header": {
+        "services": "Services",
+        "process": "Process",
+        "faq": "FAQ",
+        "blog": "Blog",
+        "cta": "Book consultation →",
+        "menuOpen": "Open menu",
+        "menuClose": "Close menu"
+    },
+    "Hero": {
+        "badge": "AI Automation for Medium-Sized Businesses",
+        "title": "Your company knowledge – ",
+        "titleHighlight": "instantly available.",
+        "titleSuffix": "For every employee.",
+        "subtitle": "We build your Company Brain: An AI system that makes your entire corporate knowledge searchable, usable, and intelligent – in weeks, not months.",
+        "ctaPrimary": "Book free consultation →",
+        "ctaSecondary": "See how it works ↓"
+    },
+    "Problem": {
+        "label": "The Problem",
+        "title": "Does this sound familiar?",
+        "cards": {
+            "search": {
+                "title": "Hours spent searching for information",
+                "text": "Your team spends time every day searching for information that exists somewhere in emails, documents, or employees' heads."
+            },
+            "knowledge": {
+                "title": "Knowledge leaves with employees",
+                "text": "When experienced employees leave the company, they take years of accumulated knowledge with them – irretrievably."
+            },
+            "silos": {
+                "title": "Department silos everywhere",
+                "text": "Each department has its own systems and documents. No one sees the big picture. Duplicate work is the norm."
+            },
+            "ai": {
+                "title": "AI potential remains unused",
+                "text": "You know AI could help – but the market is confusing, and a false start costs time and trust."
+            }
+        }
+    },
+    "Solution": {
+        "label": "The Solution",
+        "title": "Imagine every employee had a ",
+        "titleHighlight": "personal expert",
+        "description": "That's [PRODUCT NAME]. We transform your corporate knowledge into an intelligent, searchable AI – tailored for your team.",
+        "features": {
+            "speed": {
+                "title": "Answers in seconds, not hours",
+                "text": "Your team asks a question – your Company Brain delivers the answer. From your documents, your processes, your knowledge."
+            },
+            "documents": {
+                "title": "Works with your existing documents",
+                "text": "PDFs, Word, Confluence, SharePoint, emails – we integrate what you already have. No migration needed."
+            },
+            "learning": {
+                "title": "Learns along – gets better every day",
+                "text": "The more your team uses the system, the more precise the answers become. Continuous optimization, automatic."
+            },
+            "security": {
+                "title": "GDPR compliant, on German servers",
+                "text": "Your data stays in Germany. Full compliance, no compromises. Enterprise security from day one."
+            }
+        }
+    },
+    "HowItWorks": {
+        "label": "The Process",
+        "title": "How it works – in 3 steps",
+        "description": "From the first idea to the running system. Clear, plannable, risk-free.",
+        "steps": {
+            "consultation": {
+                "title": "Initial call",
+                "text": "In 15 minutes, we understand your situation and goals. Free, no obligation.",
+                "time": "15 min"
+            },
+            "build": {
+                "title": "Setup",
+                "text": "We build your customized system in a few weeks – not months.",
+                "time": "2-4 weeks"
+            },
+            "result": {
+                "title": "Result",
+                "text": "Your team works faster, smarter, better. Knowledge is instantly available.",
+                "time": "Ready to use"
+            }
+        }
+    },
+    "SocialProof": {
+        "quote": "The future belongs to companies that don't just store their knowledge, but make it intelligently usable. AI is not an end in itself – it's the tool that makes human expertise scalable.",
+        "author": "AI Expert",
+        "authorSuffix": " – From our blog interviews"
+    },
+    "FAQ": {
+        "label": "FAQ",
+        "title": "Frequently Asked Questions",
+        "description": "Have more questions? Feel free to contact us.",
+        "bookNow": "Book appointment now →",
+        "items": {
+            "what": {
+                "question": "What exactly is a Company Brain?",
+                "answer": "A Company Brain is a customized AI solution that brings together your entire corporate knowledge – from documents, emails, wikis, and other sources – in an intelligent, searchable system. Employees can ask questions in natural language and receive precise answers immediately."
+            },
+            "duration": {
+                "question": "How long does implementation take?",
+                "answer": "Depending on the complexity and scope of your knowledge sources, implementation typically takes two to four weeks. You often have a first working system after just 1-2 weeks – we work iteratively and deliver value quickly."
+            },
+            "gdpr": {
+                "question": "Is it GDPR compliant?",
+                "answer": "Yes, absolutely. Your data is exclusively processed and stored on German servers. We work with GDPR-compliant cloud providers and implement all required technical and organizational data protection measures."
+            },
+            "cost": {
+                "question": "How much does it cost?",
+                "answer": "Each project is individual, depending on scope, complexity, and number of users. In a free 15-minute initial consultation, we can understand your situation and give you a first estimate."
+            },
+            "technical": {
+                "question": "Does my team need to be technically savvy?",
+                "answer": "No. The Company Brain is designed so that any employee can use it – without technical knowledge. The operation is as simple as a Google search: ask a question, get an answer."
+            },
+            "sources": {
+                "question": "Which documents and data sources can be integrated?",
+                "answer": "Practically all: PDFs, Word documents, Excel files, emails, Confluence, SharePoint, Google Drive, Notion, internal wikis, databases, and many more. We adapt the integration to your existing infrastructure."
+            },
+            "difference": {
+                "question": "What sets you apart from ChatGPT Enterprise or Microsoft Copilot?",
+                "answer": "These tools are generic and don't know your company. Our Company Brain is specifically trained on your documents, processes, and terminology. It delivers precise, source-based answers from your own knowledge – not from the internet."
+            },
+            "security": {
+                "question": "How secure is our data?",
+                "answer": "Maximum security: end-to-end encryption, German server locations, regular security audits, access controls, and on-request on-premise deployment. Your data belongs to you and is never used to train external models."
+            }
+        }
+    },
+    "CTA": {
+        "label": "Get Started",
+        "title": "Ready for your Company Brain?",
+        "subtitle": "Let's find out in 15 minutes what automation can do for your company. Free. No obligation. No sales pressure.",
+        "noJsMessage": "JavaScript is disabled.",
+        "noJsLink": "Click here to book directly on Calendly.",
+        "trustGdpr": "🔒 GDPR compliant",
+        "trustGerman": "🇩🇪 German servers",
+        "trustFree": "✓ Free & non-binding"
+    },
+    "Blog": {
+        "label": "Insights",
+        "title": "From our Blog",
+        "allPosts": "All posts →",
+        "noPostsYet": "Our first articles will appear here soon."
+    },
+    "Footer": {
+        "description": "We automate what keeps your best people from their best work. AI solutions for German medium-sized businesses.",
+        "navigation": "Navigation",
+        "services": "Services",
+        "process": "Process",
+        "faq": "FAQ",
+        "blog": "Blog",
+        "legal": "Legal",
+        "imprint": "Imprint",
+        "privacy": "Privacy Policy",
+        "copyright": "© {year} FLOWTUNER. All rights reserved.",
+        "madeIn": "GDPR compliant | Made in Germany"
+    },
+    "Metadata": {
+        "title": "FLOWTUNER – AI Automation for Businesses",
+        "description": "We automate what keeps your best people from their best work. Your corporate knowledge – instantly available for every employee."
+    }
+}

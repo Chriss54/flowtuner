@@ -1,0 +1,9 @@
+{
+  "title": "Test Webhook Post",
+  "slug": "test-webhook-post",
+  "content": "<p>This is a test post created via the webhook API.</p>",
+  "metaDescription": "A test post to verify the webhook API works correctly.",
+  "tags": [],
+  "publishedAt": "2026-02-01T23:28:45.576Z",
+  "updatedAt": "2026-02-01T23:28:45.576Z"
+}

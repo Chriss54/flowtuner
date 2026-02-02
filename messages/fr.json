@@ -1,0 +1,166 @@
+{
+    "Header": {
+        "services": "Services",
+        "process": "Processus",
+        "faq": "FAQ",
+        "blog": "Blog",
+        "cta": "Réserver une consultation →",
+        "menuOpen": "Ouvrir le menu",
+        "menuClose": "Fermer le menu"
+    },
+    "Hero": {
+        "badge": "Automatisation IA pour les PME",
+        "title": "Votre savoir d'entreprise – ",
+        "titleHighlight": "instantanément disponible.",
+        "titleSuffix": "Pour chaque employé.",
+        "subtitle": "Nous construisons votre Company Brain : Un système d'IA qui rend tout votre savoir d'entreprise recherchable, utilisable et intelligent – en semaines, pas en mois.",
+        "ctaPrimary": "Réserver une consultation gratuite →",
+        "ctaSecondary": "Comment ça marche ↓"
+    },
+    "Problem": {
+        "label": "Le Problème",
+        "title": "Cela vous semble familier ?",
+        "cards": {
+            "search": {
+                "title": "Des heures à chercher des informations",
+                "text": "Votre équipe passe du temps chaque jour à chercher des informations qui existent quelque part dans les e-mails, les documents ou la tête des employés."
+            },
+            "knowledge": {
+                "title": "Le savoir part avec les employés",
+                "text": "Quand des employés expérimentés quittent l'entreprise, ils emportent des années de connaissances accumulées – de manière irréversible."
+            },
+            "silos": {
+                "title": "Des silos de départements partout",
+                "text": "Chaque département a ses propres systèmes et documents. Personne ne voit la vue d'ensemble. Le travail en double est la norme."
+            },
+            "ai": {
+                "title": "Le potentiel de l'IA reste inexploité",
+                "text": "Vous savez que l'IA pourrait aider – mais le marché est confus, et un faux départ coûte du temps et de la confiance."
+            }
+        }
+    },
+    "Solution": {
+        "label": "La Solution",
+        "title": "Imaginez que chaque employé dispose d'un ",
+        "titleHighlight": "expert personnel",
+        "description": "C'est [NOM DU PRODUIT]. Nous transformons votre savoir d'entreprise en une IA intelligente et recherchable – sur mesure pour votre équipe.",
+        "features": {
+            "speed": {
+                "title": "Des réponses en secondes, pas en heures",
+                "text": "Votre équipe pose une question – votre Company Brain livre la réponse. À partir de vos documents, vos processus, votre savoir."
+            },
+            "documents": {
+                "title": "Fonctionne avec vos documents existants",
+                "text": "PDFs, Word, Confluence, SharePoint, e-mails – nous intégrons ce que vous avez déjà. Pas de migration nécessaire."
+            },
+            "learning": {
+                "title": "Apprend au fil du temps – s'améliore chaque jour",
+                "text": "Plus votre équipe utilise le système, plus les réponses deviennent précises. Optimisation continue, automatique."
+            },
+            "security": {
+                "title": "Conforme au RGPD, sur des serveurs allemands",
+                "text": "Vos données restent en Allemagne. Conformité totale, sans compromis. Sécurité entreprise dès le premier jour."
+            }
+        }
+    },
+    "HowItWorks": {
+        "label": "Le Processus",
+        "title": "Comment ça marche – en 3 étapes",
+        "description": "De la première idée au système opérationnel. Clair, planifiable, sans risque.",
+        "steps": {
+            "consultation": {
+                "title": "Premier appel",
+                "text": "En 15 minutes, nous comprenons votre situation et vos objectifs. Gratuit, sans engagement.",
+                "time": "15 min"
+            },
+            "build": {
+                "title": "Mise en place",
+                "text": "Nous construisons votre système personnalisé en quelques semaines – pas en mois.",
+                "time": "2-4 semaines"
+            },
+            "result": {
+                "title": "Résultat",
+                "text": "Votre équipe travaille plus vite, plus intelligemment, mieux. Le savoir est instantanément disponible.",
+                "time": "Prêt à l'emploi"
+            }
+        }
+    },
+    "SocialProof": {
+        "quote": "L'avenir appartient aux entreprises qui ne se contentent pas de stocker leur savoir, mais le rendent intelligemment utilisable. L'IA n'est pas une fin en soi – c'est l'outil qui rend l'expertise humaine évolutive.",
+        "author": "Expert IA",
+        "authorSuffix": " – De nos interviews de blog"
+    },
+    "FAQ": {
+        "label": "FAQ",
+        "title": "Questions Fréquentes",
+        "description": "Vous avez d'autres questions ? N'hésitez pas à nous contacter.",
+        "bookNow": "Réserver un rendez-vous →",
+        "items": {
+            "what": {
+                "question": "Qu'est-ce qu'un Company Brain exactement ?",
+                "answer": "Un Company Brain est une solution IA personnalisée qui rassemble tout le savoir de votre entreprise – à partir de documents, e-mails, wikis et autres sources – dans un système intelligent et recherchable. Les employés peuvent poser des questions en langage naturel et recevoir des réponses précises immédiatement."
+            },
+            "duration": {
+                "question": "Combien de temps prend l'implémentation ?",
+                "answer": "Selon la complexité et l'étendue de vos sources de connaissances, l'implémentation prend généralement deux à quatre semaines. Vous avez souvent un premier système fonctionnel après seulement 1-2 semaines – nous travaillons de manière itérative et livrons rapidement de la valeur."
+            },
+            "gdpr": {
+                "question": "Est-ce conforme au RGPD ?",
+                "answer": "Oui, absolument. Vos données sont exclusivement traitées et stockées sur des serveurs allemands. Nous travaillons avec des fournisseurs cloud conformes au RGPD et mettons en œuvre toutes les mesures techniques et organisationnelles requises pour la protection des données."
+            },
+            "cost": {
+                "question": "Combien ça coûte ?",
+                "answer": "Chaque projet est individuel, selon la portée, la complexité et le nombre d'utilisateurs. Lors d'une consultation initiale gratuite de 15 minutes, nous pouvons comprendre votre situation et vous donner une première estimation."
+            },
+            "technical": {
+                "question": "Mon équipe doit-elle être techniquement compétente ?",
+                "answer": "Non. Le Company Brain est conçu pour que tout employé puisse l'utiliser – sans connaissances techniques. L'utilisation est aussi simple qu'une recherche Google : posez une question, obtenez une réponse."
+            },
+            "sources": {
+                "question": "Quels documents et sources de données peuvent être intégrés ?",
+                "answer": "Pratiquement tous : PDFs, documents Word, fichiers Excel, e-mails, Confluence, SharePoint, Google Drive, Notion, wikis internes, bases de données, et bien d'autres. Nous adaptons l'intégration à votre infrastructure existante."
+            },
+            "difference": {
+                "question": "Qu'est-ce qui vous distingue de ChatGPT Enterprise ou Microsoft Copilot ?",
+                "answer": "Ces outils sont génériques et ne connaissent pas votre entreprise. Notre Company Brain est spécifiquement entraîné sur vos documents, processus et terminologie. Il fournit des réponses précises, basées sur des sources de votre propre savoir – pas d'internet."
+            },
+            "security": {
+                "question": "Quelle est la sécurité de nos données ?",
+                "answer": "Sécurité maximale : chiffrement de bout en bout, serveurs allemands, audits de sécurité réguliers, contrôles d'accès et déploiement sur site sur demande. Vos données vous appartiennent et ne sont jamais utilisées pour entraîner des modèles externes."
+            }
+        }
+    },
+    "CTA": {
+        "label": "Commencer",
+        "title": "Prêt pour votre Company Brain ?",
+        "subtitle": "Découvrons en 15 minutes ce que l'automatisation peut faire pour votre entreprise. Gratuit. Sans engagement. Sans pression commerciale.",
+        "noJsMessage": "JavaScript est désactivé.",
+        "noJsLink": "Cliquez ici pour réserver directement sur Calendly.",
+        "trustGdpr": "🔒 Conforme RGPD",
+        "trustGerman": "🇩🇪 Serveurs allemands",
+        "trustFree": "✓ Gratuit et sans engagement"
+    },
+    "Blog": {
+        "label": "Insights",
+        "title": "De notre Blog",
+        "allPosts": "Tous les articles →",
+        "noPostsYet": "Nos premiers articles apparaîtront bientôt ici."
+    },
+    "Footer": {
+        "description": "Nous automatisons ce qui empêche vos meilleurs talents de faire leur meilleur travail. Solutions IA pour les PME allemandes.",
+        "navigation": "Navigation",
+        "services": "Services",
+        "process": "Processus",
+        "faq": "FAQ",
+        "blog": "Blog",
+        "legal": "Mentions légales",
+        "imprint": "Mentions légales",
+        "privacy": "Protection des données",
+        "copyright": "© {year} FLOWTUNER. Tous droits réservés.",
+        "madeIn": "Conforme RGPD | Made in Germany"
+    },
+    "Metadata": {
+        "title": "FLOWTUNER – Automatisation IA pour les Entreprises",
+        "description": "Nous automatisons ce qui empêche vos meilleurs talents de faire leur meilleur travail. Votre savoir d'entreprise – instantanément disponible pour chaque employé."
+    }
+}
