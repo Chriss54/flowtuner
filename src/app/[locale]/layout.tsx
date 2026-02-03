@@ -168,6 +168,19 @@ export default async function RootLayout({ children, params }: Props) {
                 <link rel="alternate" hrefLang="en" href={`${siteConfig.url}/en`} />
                 <link rel="alternate" hrefLang="fr" href={`${siteConfig.url}/fr`} />
                 <link rel="alternate" hrefLang="x-default" href={`${siteConfig.url}/de`} />
+                {/* Theme initialization script - runs before paint to prevent flash */}
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            (function() {
+                                try {
+                                    var theme = localStorage.getItem('theme') || 'dark';
+                                    document.documentElement.setAttribute('data-theme', theme);
+                                } catch (e) {}
+                            })();
+                        `,
+                    }}
+                />
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{

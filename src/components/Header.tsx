@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { routing, Locale } from "@/i18n/routing";
+import { ThemeToggle } from "./ThemeToggle";
 
 const localeLabels: Record<Locale, string> = {
     de: "DE",
@@ -100,6 +101,9 @@ export function Header() {
                             </span>
                         ))}
                     </div>
+
+                    {/* Theme Toggle */}
+                    <ThemeToggle />
 
                     <div className="header__cta">
                         <Link href={`/${locale}/#contact`} className="btn btn--primary" onClick={closeMenu}>
