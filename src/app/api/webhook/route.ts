@@ -251,6 +251,16 @@ export async function POST(request: NextRequest) {
         // Log incoming payload for debugging
         console.log("Webhook received payload keys:", Object.keys(body));
 
+        // Handle Rankenstein test connection requests
+        // These contain 'test' field but no actual article data
+        if (body.test === true || body.test === "true" || (body.test && !body.title && !body.htmlContent)) {
+            console.log("Webhook test connection successful");
+            return NextResponse.json({
+                success: true,
+                message: "Test connection successful! Webhook is ready to receive articles.",
+            });
+        }
+
         const validation = validatePayload(body);
 
         if (!validation.valid) {
