@@ -198,6 +198,17 @@ export default async function BlogPostPage({ params }: Props) {
                         </div>
                     </header>
 
+                    {/* Featured Image */}
+                    {post.featuredImage && (
+                        <div className="article__featured-image">
+                            <img
+                                src={post.featuredImage}
+                                alt={post.title}
+                                loading="eager"
+                            />
+                        </div>
+                    )}
+
                     {/* Main Content */}
                     <div
                         className="article__content"

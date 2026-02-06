@@ -245,6 +245,138 @@ async function savePostToGitHub(slug: string, postData: object): Promise<{ succe
     }
 }
 
+// Translate post content using OpenAI
+interface TranslatedPost {
+    title: string;
+    content: string;
+    metaDescription: string;
+    tags: string[];
+}
+
+async function translatePost(
+    post: { title: string; content: string; metaDescription: string; tags: string[] },
+    targetLang: 'en' | 'fr'
+): Promise<TranslatedPost | null> {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+        console.warn("OPENAI_API_KEY not set, skipping translation");
+        return null;
+    }
+
+    const langName = targetLang === 'en' ? 'English' : 'French';
+
+    const prompt = `Translate the following blog post from German to ${langName}. 
+Keep all HTML tags intact. Preserve the original formatting and structure.
+Return ONLY a valid JSON object with these fields: title, content, metaDescription, tags (as array)
+
+Blog post to translate:
+Title: ${post.title}
+Meta Description: ${post.metaDescription}
+Tags: ${post.tags.join(', ')}
+Content (HTML):
+${post.content}`;
+
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    {
+                        role: 'system',
+                        content: `You are a professional translator. Translate blog posts accurately while preserving HTML formatting. Always respond with valid JSON only, no markdown code blocks.`
+                    },
+                    { role: 'user', content: prompt }
+                ],
+                temperature: 0.3,
+                max_tokens: 8000,
+            }),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            console.error("OpenAI API error:", error);
+            return null;
+        }
+
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content;
+
+        if (!content) {
+            console.error("Empty response from OpenAI");
+            return null;
+        }
+
+        // Parse the JSON response (handle potential markdown code blocks)
+        let jsonContent = content.trim();
+        if (jsonContent.startsWith('```')) {
+            jsonContent = jsonContent.replace(/```json?\n?/g, '').replace(/```$/g, '').trim();
+        }
+
+        const translated = JSON.parse(jsonContent) as TranslatedPost;
+        console.log(`Successfully translated post to ${langName}`);
+        return translated;
+    } catch (error) {
+        console.error(`Translation to ${langName} failed:`, error);
+        return null;
+    }
+}
+
+// Create translated versions and save to GitHub
+async function createTranslatedPosts(
+    originalPost: {
+        slug: string;
+        content: string;
+        title: string;
+        metaDescription: string;
+        tags: string[];
+        featuredImage?: string;
+        author?: string;
+        publishedAt: string;
+        updatedAt: string;
+    }
+): Promise<void> {
+    const locales: Array<'en' | 'fr'> = ['en', 'fr'];
+
+    for (const locale of locales) {
+        try {
+            const translated = await translatePost(
+                {
+                    title: originalPost.title,
+                    content: originalPost.content,
+                    metaDescription: originalPost.metaDescription,
+                    tags: originalPost.tags,
+                },
+                locale
+            );
+
+            if (translated) {
+                const translatedPost = {
+                    ...originalPost,
+                    title: translated.title,
+                    content: translated.content,
+                    metaDescription: translated.metaDescription,
+                    tags: translated.tags,
+                    slug: `${originalPost.slug}-${locale}`,
+                };
+
+                const result = await savePostToGitHub(translatedPost.slug, translatedPost);
+                if (result.success) {
+                    console.log(`Created ${locale.toUpperCase()} translation: ${translatedPost.slug}`);
+                } else {
+                    console.error(`Failed to save ${locale.toUpperCase()} translation:`, result.error);
+                }
+            }
+        } catch (error) {
+            console.error(`Failed to create ${locale.toUpperCase()} translation:`, error);
+        }
+    }
+}
+
 export async function POST(request: NextRequest) {
     const ip =
         request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -340,6 +472,12 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        // Create translated versions in background (don't wait for completion)
+        // This runs async so the webhook can return quickly
+        createTranslatedPosts(postData).catch(err => {
+            console.error("Background translation failed:", err);
+        });
+
         // Trigger ISR revalidation for all locales
         revalidatePath("/blog");
         revalidatePath(`/blog/${payload.slug}`);
@@ -347,13 +485,15 @@ export async function POST(request: NextRequest) {
         revalidatePath(`/de/blog/${payload.slug}`);
         revalidatePath("/en/blog");
         revalidatePath(`/en/blog/${payload.slug}`);
+        revalidatePath(`/en/blog/${payload.slug}-en`);
         revalidatePath("/fr/blog");
         revalidatePath(`/fr/blog/${payload.slug}`);
+        revalidatePath(`/fr/blog/${payload.slug}-fr`);
 
         return NextResponse.json({
             success: true,
             slug: `/blog/${payload.slug}`,
-            message: "Post created successfully and committed to GitHub",
+            message: "Post created successfully and committed to GitHub. Translations being generated.",
         });
     } catch (error) {
         console.error("Webhook error:", error);
