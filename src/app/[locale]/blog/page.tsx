@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPage({ params }: Props) {
     const { locale } = await params;
     setRequestLocale(locale);
-    const posts = await getAllPosts();
+    const posts = await getAllPosts(locale);
     const dateLocale = locale === "de" ? "de-DE" : locale === "fr" ? "fr-FR" : "en-US";
 
     const labels = {
@@ -73,7 +73,7 @@ export default async function BlogPage({ params }: Props) {
                         {posts.map((post) => (
                             <Link
                                 key={post.slug}
-                                href={`/${locale}/blog/${post.slug}`}
+                                href={`/${locale}/blog/${post.slug.replace(/-en$/, '').replace(/-fr$/, '')}`}
                                 className="blog-card card"
                             >
                                 <div className="blog-card__image">

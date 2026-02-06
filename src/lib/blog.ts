@@ -22,14 +22,38 @@ function ensurePostsDirectory() {
     }
 }
 
-export async function getAllPosts(): Promise<BlogPost[]> {
+// Get locale suffix for file lookup
+function getLocaleSuffix(locale: string): string {
+    if (locale === 'en') return '-en';
+    if (locale === 'fr') return '-fr';
+    return ''; // German is the default (no suffix)
+}
+
+// Check if a slug is a base slug (not a translation)
+function isBaseSlug(slug: string): boolean {
+    return !slug.endsWith('-en') && !slug.endsWith('-fr');
+}
+
+export async function getAllPosts(locale: string = 'de'): Promise<BlogPost[]> {
     ensurePostsDirectory();
 
     try {
         const fileNames = fs.readdirSync(postsDirectory);
         const jsonFiles = fileNames.filter((name) => name.endsWith(".json"));
 
+        const suffix = getLocaleSuffix(locale);
+
         const posts = jsonFiles
+            .filter((fileName) => {
+                const slug = fileName.replace('.json', '');
+                if (locale === 'de') {
+                    // For German, only include base slugs (no -en, -fr suffix)
+                    return isBaseSlug(slug);
+                } else {
+                    // For EN/FR, only include posts with the correct suffix
+                    return slug.endsWith(suffix);
+                }
+            })
             .map((fileName) => {
                 const filePath = path.join(postsDirectory, fileName);
                 const fileContent = fs.readFileSync(filePath, "utf8");
@@ -46,16 +70,31 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     }
 }
 
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+export async function getPostBySlug(slug: string, locale: string = 'de'): Promise<BlogPost | null> {
     ensurePostsDirectory();
 
-    const filePath = path.join(postsDirectory, `${slug}.json`);
+    // For EN/FR, try to find the translated version first
+    const suffix = getLocaleSuffix(locale);
+    let targetSlug = slug;
+
+    // If accessing EN/FR and the slug doesn't already have the suffix, add it
+    if (suffix && !slug.endsWith(suffix)) {
+        targetSlug = slug + suffix;
+    }
+
+    const filePath = path.join(postsDirectory, `${targetSlug}.json`);
 
     try {
         if (fs.existsSync(filePath)) {
             const fileContent = fs.readFileSync(filePath, "utf8");
             return JSON.parse(fileContent) as BlogPost;
         }
+
+        // Fallback: if translation doesn't exist, return null (don't show German on EN/FR pages)
+        if (suffix) {
+            return null;
+        }
+
         return null;
     } catch {
         return null;
@@ -65,9 +104,10 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 export async function getRelatedPosts(
     currentSlug: string,
     tags: string[] = [],
-    limit: number = 3
+    limit: number = 3,
+    locale: string = 'de'
 ): Promise<BlogPost[]> {
-    const allPosts = await getAllPosts();
+    const allPosts = await getAllPosts(locale);
 
     // Filter out current post
     const otherPosts = allPosts.filter((post) => post.slug !== currentSlug);

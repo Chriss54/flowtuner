@@ -28,7 +28,7 @@ export async function generateStaticParams() {
 // Generate metadata for each post
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale, slug } = await params;
-    const post = await getPostBySlug(slug);
+    const post = await getPostBySlug(slug, locale);
 
     if (!post) {
         return {
@@ -74,13 +74,13 @@ export default async function BlogPostPage({ params }: Props) {
     const { locale, slug } = await params;
     setRequestLocale(locale);
 
-    const post = await getPostBySlug(slug);
+    const post = await getPostBySlug(slug, locale);
 
     if (!post) {
         notFound();
     }
 
-    const relatedPosts = await getRelatedPosts(slug, post.tags, 3);
+    const relatedPosts = await getRelatedPosts(slug, post.tags, 3, locale);
     const readingTime = calculateReadingTime(post.content);
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
     const dateLocale = locale === "de" ? "de-DE" : locale === "fr" ? "fr-FR" : "en-US";
