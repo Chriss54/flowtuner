@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import fs from "fs";
-import path from "path";
 
 // Rate limiting - simple in-memory store (use Redis in production)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -57,9 +55,6 @@ function normalizePayload(data: Record<string, unknown>): Record<string, unknown
     const normalized: Record<string, unknown> = { ...data };
 
     // Map Rankenstein field names to our expected format
-    // Rankenstein sends: title, htmlContent, markdown, coverImageUrl, seoMetadata, schemaJsonLd, keywords, wordCountAndReadingTime
-
-    // Content: prefer htmlContent, fall back to markdown, then content
     if (!normalized.content) {
         if (data.htmlContent && typeof data.htmlContent === 'string') {
             normalized.content = data.htmlContent;
@@ -110,7 +105,6 @@ function normalizePayload(data: Record<string, unknown>): Record<string, unknown
 
     // Generate meta description from content if not provided
     if (!normalized.metaDescription && normalized.content && typeof normalized.content === 'string') {
-        // Strip HTML tags and take first 160 chars
         const textContent = normalized.content.replace(/<[^>]*>/g, '').trim();
         normalized.metaDescription = textContent.substring(0, 160) + (textContent.length > 160 ? '...' : '');
     }
@@ -125,10 +119,8 @@ function validatePayload(
         return { valid: false, error: "Invalid payload: expected JSON object" };
     }
 
-    // First normalize the payload to handle different field names
     const normalized = normalizePayload(data as Record<string, unknown>);
 
-    // Required fields
     if (!normalized.title || typeof normalized.title !== "string") {
         return { valid: false, error: "Missing or invalid required field: title" };
     }
@@ -139,31 +131,28 @@ function validatePayload(
         };
     }
     if (!normalized.slug || typeof normalized.slug !== "string") {
-        return { valid: false, error: "Missing or invalid required field: slug (auto-generated from title if not provided)" };
+        return { valid: false, error: "Missing or invalid required field: slug" };
     }
     if (!normalized.metaDescription || typeof normalized.metaDescription !== "string") {
         return {
             valid: false,
-            error: "Missing or invalid required field: metaDescription (auto-generated from content if not provided)",
+            error: "Missing or invalid required field: metaDescription",
         };
     }
 
-    // Validate slug format (lowercase, hyphens only)
     const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
     if (!slugRegex.test(normalized.slug as string)) {
-        // Try to fix the slug
         const fixedSlug = generateSlug(normalized.slug as string);
         if (fixedSlug && slugRegex.test(fixedSlug)) {
             normalized.slug = fixedSlug;
         } else {
             return {
                 valid: false,
-                error: "Invalid slug format: must be lowercase with hyphens (e.g., my-blog-post)",
+                error: "Invalid slug format: must be lowercase with hyphens",
             };
         }
     }
 
-    // Build validated payload
     const validPayload: PostPayload = {
         title: normalized.title as string,
         content: normalized.content as string,
@@ -174,15 +163,12 @@ function validatePayload(
     if (normalized.featuredImage && typeof normalized.featuredImage === "string") {
         validPayload.featuredImage = normalized.featuredImage;
     }
-
     if (normalized.author && typeof normalized.author === "string") {
         validPayload.author = normalized.author;
     }
-
     if (normalized.tags && Array.isArray(normalized.tags)) {
         validPayload.tags = normalized.tags.filter(t => typeof t === "string");
     }
-
     if (normalized.publishedAt && typeof normalized.publishedAt === "string") {
         const date = new Date(normalized.publishedAt);
         if (!isNaN(date.getTime())) {
@@ -193,14 +179,78 @@ function validatePayload(
     return { valid: true, payload: validPayload };
 }
 
+// Save post to GitHub repository via API
+async function savePostToGitHub(slug: string, postData: object): Promise<{ success: boolean; error?: string }> {
+    const token = process.env.GITHUB_TOKEN;
+    const owner = process.env.GITHUB_OWNER || 'Chriss54';
+    const repo = process.env.GITHUB_REPO || 'flowtuner';
+    const branch = process.env.GITHUB_BRANCH || 'main';
+    const filePath = `content/posts/${slug}.json`;
+
+    if (!token) {
+        console.error("GITHUB_TOKEN environment variable is not set");
+        return { success: false, error: "GitHub token not configured" };
+    }
+
+    const content = Buffer.from(JSON.stringify(postData, null, 2)).toString('base64');
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+
+    try {
+        // Check if file already exists (to get SHA for update)
+        let sha: string | undefined;
+        try {
+            const existingFile = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'User-Agent': 'flowtuner-webhook',
+                },
+            });
+            if (existingFile.ok) {
+                const data = await existingFile.json();
+                sha = data.sha;
+            }
+        } catch {
+            // File doesn't exist, that's fine
+        }
+
+        // Create or update file
+        const response = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json',
+                'User-Agent': 'flowtuner-webhook',
+            },
+            body: JSON.stringify({
+                message: `Add blog post: ${slug}`,
+                content: content,
+                branch: branch,
+                ...(sha && { sha }), // Include SHA if updating existing file
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("GitHub API error:", errorData);
+            return { success: false, error: `GitHub API error: ${errorData.message || response.statusText}` };
+        }
+
+        console.log("Successfully committed post to GitHub:", slug);
+        return { success: true };
+    } catch (error) {
+        console.error("GitHub API request failed:", error);
+        return { success: false, error: "Failed to commit to GitHub" };
+    }
+}
+
 export async function POST(request: NextRequest) {
-    // Get client IP for rate limiting
     const ip =
         request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
         request.headers.get("x-real-ip") ||
         "unknown";
 
-    // Check rate limit
     if (!checkRateLimit(ip)) {
         return NextResponse.json(
             { success: false, error: "Rate limit exceeded. Max 10 requests/minute." },
@@ -208,7 +258,6 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    // Verify authentication
     const authHeader = request.headers.get("authorization");
     const expectedToken = process.env.WEBHOOK_SECRET;
 
@@ -235,7 +284,6 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    // Check content length (5MB limit)
     const contentLength = request.headers.get("content-length");
     if (contentLength && parseInt(contentLength) > 5 * 1024 * 1024) {
         return NextResponse.json(
@@ -245,14 +293,11 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        // Parse and validate payload
         const body = await request.json();
 
-        // Log incoming payload for debugging
         console.log("Webhook received payload keys:", Object.keys(body));
 
         // Handle Rankenstein test connection requests
-        // These contain 'test' field but no actual article data
         if (body.test === true || body.test === "true" || (body.test && !body.title && !body.htmlContent)) {
             console.log("Webhook test connection successful");
             return NextResponse.json({
@@ -273,7 +318,6 @@ export async function POST(request: NextRequest) {
 
         const { payload } = validation;
 
-        // Prepare post data
         const postData = {
             title: payload.title,
             slug: payload.slug,
@@ -286,17 +330,15 @@ export async function POST(request: NextRequest) {
             updatedAt: new Date().toISOString(),
         };
 
-        // Ensure posts directory exists
-        const postsDirectory = path.join(process.cwd(), "content/posts");
-        if (!fs.existsSync(postsDirectory)) {
-            fs.mkdirSync(postsDirectory, { recursive: true });
+        // Save to GitHub instead of local filesystem
+        const githubResult = await savePostToGitHub(payload.slug, postData);
+
+        if (!githubResult.success) {
+            return NextResponse.json(
+                { success: false, error: githubResult.error || "Failed to save post" },
+                { status: 500 }
+            );
         }
-
-        // Save post to JSON file
-        const filePath = path.join(postsDirectory, `${payload.slug}.json`);
-        fs.writeFileSync(filePath, JSON.stringify(postData, null, 2), "utf8");
-
-        console.log("Webhook saved post:", payload.slug);
 
         // Trigger ISR revalidation for all locales
         revalidatePath("/blog");
@@ -311,7 +353,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
             success: true,
             slug: `/blog/${payload.slug}`,
-            message: "Post created successfully",
+            message: "Post created successfully and committed to GitHub",
         });
     } catch (error) {
         console.error("Webhook error:", error);
@@ -330,7 +372,6 @@ export async function POST(request: NextRequest) {
     }
 }
 
-// Only allow POST method
 export async function GET() {
     return NextResponse.json(
         { success: false, error: "Method not allowed. Use POST." },
