@@ -319,7 +319,7 @@ ${post.content}`;
                     { role: 'user', content: prompt }
                 ],
                 temperature: 0.3,
-                max_tokens: 8000,
+                max_tokens: 16000,
             }),
         });
 
@@ -498,11 +498,24 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Create translated versions in background (don't wait for completion)
-        // This runs async so the webhook can return quickly
-        createTranslatedPosts(postData).catch(err => {
-            console.error("Background translation failed:", err);
-        });
+        // Create translated versions SYNCHRONOUSLY (wait for completion)
+        // This ensures translations complete before Vercel function ends
+        console.log("Starting translations for:", payload.slug);
+        let translationResults = { en: false, fr: false };
+
+        try {
+            const apiKey = process.env.OPENAI_API_KEY;
+            if (apiKey) {
+                console.log("OPENAI_API_KEY found, starting translations...");
+                await createTranslatedPosts(postData);
+                translationResults = { en: true, fr: true };
+                console.log("Translations completed successfully");
+            } else {
+                console.warn("OPENAI_API_KEY not set in environment, skipping translations");
+            }
+        } catch (err) {
+            console.error("Translation process failed:", err);
+        }
 
         // Trigger ISR revalidation for all locales
         revalidatePath("/blog");
