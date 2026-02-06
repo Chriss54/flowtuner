@@ -80,12 +80,38 @@ function normalizePayload(data: Record<string, unknown>): Record<string, unknown
         }
     }
 
-    // Featured image: map coverImageUrl or coverImage
+    // Featured image: map coverImageUrl, coverImage, image, cover, or from seoMetadata
     if (!normalized.featuredImage) {
         if (data.coverImageUrl && typeof data.coverImageUrl === 'string') {
             normalized.featuredImage = data.coverImageUrl;
         } else if (data.coverImage && typeof data.coverImage === 'string') {
             normalized.featuredImage = data.coverImage;
+        } else if (data.cover && typeof data.cover === 'string') {
+            normalized.featuredImage = data.cover;
+        } else if (data.image && typeof data.image === 'string') {
+            normalized.featuredImage = data.image;
+        } else if (data.featuredImage && typeof data.featuredImage === 'string') {
+            normalized.featuredImage = data.featuredImage;
+        }
+    }
+
+    // Also check seoMetadata for image if not found
+    if (!normalized.featuredImage && data.seoMetadata && typeof data.seoMetadata === 'object') {
+        const seo = data.seoMetadata as Record<string, unknown>;
+        if (seo.image && typeof seo.image === 'string') {
+            normalized.featuredImage = seo.image;
+        } else if (seo.coverImage && typeof seo.coverImage === 'string') {
+            normalized.featuredImage = seo.coverImage;
+        } else if (seo.ogImage && typeof seo.ogImage === 'string') {
+            normalized.featuredImage = seo.ogImage;
+        }
+    }
+
+    // Try to extract cover image from schema.org JSON-LD in content
+    if (!normalized.featuredImage && normalized.content && typeof normalized.content === 'string') {
+        const schemaMatch = normalized.content.match(/"image":\s*\{\s*"@type":\s*"ImageObject",\s*"url":\s*"([^"]+)"/);
+        if (schemaMatch && schemaMatch[1]) {
+            normalized.featuredImage = schemaMatch[1];
         }
     }
 
