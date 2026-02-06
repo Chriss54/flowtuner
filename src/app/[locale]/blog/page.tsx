@@ -73,7 +73,7 @@ export default async function BlogPage({ params }: Props) {
                         {posts.map((post) => (
                             <Link
                                 key={post.slug}
-                                href={`/${locale}/blog/${post.slug.replace(/-en$/, '').replace(/-fr$/, '')}`}
+                                href={`/${locale}/blog/${post.slug}`}
                                 className="blog-card card"
                             >
                                 <div className="blog-card__image">
