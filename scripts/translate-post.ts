@@ -112,7 +112,7 @@ interface SlugMapping {
 async function main() {
     const postsDir = path.join(process.cwd(), "content/posts");
     const mappingPath = path.join(process.cwd(), "content/slug-mapping.json");
-    const originalSlug = "wie-sie-ki-workflows-fuer-messbaren-roi-im-kmu-implementiere";
+    const originalSlug = "ki-agenten-im-mittelstand-definition-nutzen-integration";
     const originalPath = path.join(postsDir, `${originalSlug}.json`);
 
     // Load or create slug mapping
